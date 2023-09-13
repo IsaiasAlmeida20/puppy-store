@@ -5,7 +5,7 @@ from .models import Puppy
 from .serializers import PuppySerializer
 
 
-@api_view('GET', 'DELETE', 'PUT')
+@api_view(['GET', 'DELETE', 'PUT'])
 def get_delete_update_puppy(request, pk):
     try:
         puppy = Puppy.objects.get(pk=pk)
@@ -21,6 +21,7 @@ def get_delete_update_puppy(request, pk):
     elif request.method == 'PUT':
         return Response({})
 
+@api_view(['GET', 'POST'])
 def get_post_puppies(request):
 
     if request.method == 'GET':
