@@ -23,8 +23,9 @@ def get_delete_update_puppy(request, pk):
             return Response(serializer.data, status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == 'DELETE':
-        return Response({})
+    if request.method == 'DELETE':
+        puppy.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET', 'POST'])
