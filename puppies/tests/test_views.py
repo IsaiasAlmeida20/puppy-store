@@ -33,3 +33,34 @@ class GetAllPuppiesTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data, serializer.data)
 
+
+class GetSinglePuppyTest(TestCase):
+    """Test module for GET a single puppy API"""
+    def setUp(self):
+        self.casper = Puppy.objects.create(
+            name='Casper', age=3, breed='Bull Dog', color='Black'
+        )
+        self.muffin = Puppy.objects.create(
+            name='Muffin', age=1, breed='Gradene', color='Brown'
+        )
+        self.rambo = Puppy.objects.create(
+            name='Rambo', age=2, breed='Labrador', color='Black'
+        )
+        self.ricky = Puppy.objects.create(
+            name='Ricky', age=6, breed='Labrador', color='Brown'
+        )
+
+    def test_get_valid_single_puppy(self):
+        response = client.get(
+            reverse('get_delete_update_puppy', kwargs={'pk': self.rambo.pk})
+        )
+        puppy = Puppy.objects.get(pk=self.rambo.pk)
+        serializer = PuppySerializer(puppy)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data, serializer.data)
+
+    def test_get_invalid_single_puppy(self):
+        response = client.get(
+            reverse('get_delete_update_puppy', kwargs={'pk': 999})
+        )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
